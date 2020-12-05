@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void read_file();
+
 int main()
 {
     read_file();
