@@ -46,42 +46,46 @@ void read_file()
         // 1バイト
         if ( (char)0x00 <= text[i] && text[i] <= (char)0x7F )
         {
-            utf8_text[j] += text[i];
+            utf8_text[j] = 0xFF & text[i];
             i+=1;
         }
         // 2バイト
         else if ( (char)0xC0 <= text[i] && text[i] <= (char)0xDF )
         {
-            utf8_text[j] += text[i];
+            utf8_text[j] = 0xFF & text[i];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+1];
+            utf8_text[j] += 0xFF & text[i+1];
             i+=2;
         }
         // 3バイト
         else if ( (char)0xE0 <= text[i] && text[i] <= (char)0xEF )
         {
-            utf8_text[j] += text[i];
+	    utf8_text[j] = 0xFF & text[i];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+1];
+            utf8_text[j] += 0xFF & text[i+1];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+2];
+            utf8_text[j] += 0xFF & text[i+2];
             i+=3;
         }
         // 4バイト
         else if ( (char)0xF0 <= text[i] && text[i] <= (char)0xF7 )
         {
-            utf8_text[j] += text[i];
+            utf8_text[j] = 0xFF & text[i];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+1];
+            utf8_text[j] += 0xFF & text[i+1];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+2];
+            utf8_text[j] += 0xFF & text[i+2];
             utf8_text[j] <<= 8;
-            utf8_text[j] += text[i+3];
+            utf8_text[j] += 0xFF & text[i+3];
             i+=4;
         }
-        printf("%08x\n", 0xff & text[i]);
+	printf("%08X\n", utf8_text[j]);
         text_count++;
     }
+
+    printf("count: %d\n", text_count);
+
+
 
     return ;
 }
