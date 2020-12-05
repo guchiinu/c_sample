@@ -13,7 +13,8 @@ int main()
 void read_file()
 {
     FILE *fp;
-    wchar_t text[100];
+    char text[100];
+    char rev_text[100];
     size_t size;
 
     fp = fopen("resource/sample.txt","r");
@@ -22,9 +23,11 @@ void read_file()
         printf("file not found.\n");
         return ;
     }
-    size = fread(text, sizeof(text), 100, fp);
+    size = fread(text, 1, 100, fp);
+    text[size] = '\0';
 
-    printf("%ls\n", text);
+    printf("size: %d\n", size);
+    printf("%s\n", text);
 
     return ;
 }
