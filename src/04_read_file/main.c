@@ -33,36 +33,38 @@ void read_file()
 
     for (i = size - 3, j = 0; i >= 0; )
     {
-	printf("%x\n", text[i]);
-	if ( 0xFFFFFF00 <= text[i] && text[i] <= 0xFFFFFF7F )
-	{
-		printf("1バイト\n");
-		i-=1;
-		j+=1;
-	}
-	else if ( 0xFFFFFFC0 <= text[i] && text[i] <= 0xFFFFFFDF )
+        printf("%x\n", text[i]);
+        if ( 0xFFFFFF00 <= text[i] && text[i] <= 0xFFFFFF7F )
         {
-                printf("2バイト\n");
-		i-=2;
-		j+=2;
+            printf("1バイト\n");
+            rev_text[j] = text[i];
+            i-=1;
+            j+=1;
         }
-	else if ( 0xFFFFFFE0 <= text[i] && text[i] <= 0xFFFFFFFFEF )
+        else if ( 0xFFFFFFC0 <= text[i] && text[i] <= 0xFFFFFFDF )
         {
-                printf("3バイト\n");
-		i-=3;
-		j+=3;
+            printf("2バイト\n");
+            rev_text[j] = text[i];
+            rev_text[j+1] = text[i+1];
+            i-=2;
+            j+=2;
         }
-	else
-	{
-		printf("?バイト\n");
-		// とりあえず１バイト進める
-		i-=1;
-		j+=1;
-	}
-
-        rev_text[j] = text[i];
-        rev_text[j+1] = text[i+1];
-	rev_text[j+2] = text[i+2];
+        else if ( 0xFFFFFFE0 <= text[i] && text[i] <= 0xFFFFFFFFEF )
+        {
+            printf("3バイト\n");
+            rev_text[j] = text[i];
+            rev_text[j+1] = text[i+1];
+            rev_text[j+2] = text[i+2];
+            i-=3;
+            j+=3;
+        }
+        else
+        {
+            printf("?バイト\n");
+            // とりあえず１バイト進める
+            i-=1;
+            j+=1;
+        }
     }
     rev_text[size] = '\0';
 
