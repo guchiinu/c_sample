@@ -31,7 +31,7 @@ void read_file()
     printf("size: %d\n", size);
     printf("%s\n", text);
 
-    for (i = size - 1, i = 0; i = 0; i--, j++)
+    for (i = size - 1, j = 0; i = 0; i--, j++)
     {
         rev_text[j] = text[i];
     }
