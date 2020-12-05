@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void read_file();
+
+typedef unsigned int utf8;
 
 int main()
 {
@@ -14,10 +17,12 @@ void read_file()
 {
     FILE *fp;
     char text[100];
-    char rev_text[100];
     size_t size;
     int i;
     int j;
+    utf8 utf8_text[100];
+    int text_count;
+    utf8 utf8_rev_text[100];
 
     fp = fopen("resource/sample.txt","r");
     if (fp == NULL)
@@ -31,57 +36,52 @@ void read_file()
     printf("size: %d\n", size);
     printf("%s\n", text);
 
-    for (i = size, j = 0; i >= 0; i--)
+    // 初期化
+    memset(utf8_text, 0, sizeof(utf8_text));
+    text_count = 0;
+
+    // 文字毎に分解し、文字数をカウントする
+    for ( i = 0, j = 0; i < size; j++)
     {
-        printf("%02x%02x%02x\n", 0xff & text[i], 0xff & text[i+1], 0xff & text[i+2]);
+        // 1バイト
         if ( (char)0x00 <= text[i] && text[i] <= (char)0x7F )
         {
-            printf("1バイト\n");
-            rev_text[j] = text[i];
-            i-=1;
-            j+=1;
+            utf8_text[j] += text[i];
+            i+=1;
         }
+        // 2バイト
         else if ( (char)0xC0 <= text[i] && text[i] <= (char)0xDF )
         {
-            printf("2バイト\n");
-            rev_text[j] = text[i];
-            rev_text[j+1] = text[i+1];
-            i-=2;
-            j+=2;
+            utf8_text[j] += text[i];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+1];
+            i+=2;
         }
+        // 3バイト
         else if ( (char)0xE0 <= text[i] && text[i] <= (char)0xEF )
         {
-            printf("3バイト\n");
-            rev_text[j] = text[i];
-            rev_text[j+1] = text[i+1];
-            rev_text[j+2] = text[i+2];
-            i-=3;
-            j+=3;
+            utf8_text[j] += text[i];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+1];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+2];
+            i+=3;
         }
-	else if ( (char)0xF0 <= text[i] && text[i] <= (char)0xF7 )
-	{
-	    i-=4;
-	    j+=4;
-	}
-	else if ( (char)0xF8 <= text[i] && text[i] <= (char)0xFB )
-	{
-	    i-=5;
-	    j+=5;
-	}
-	else if ( (char)0xFC <= text[i] && text[i] <= (char)0xFD )
-	{
-	    i-=6;
-	    j+=6;
-	}
-        else 
+        // 4バイト
+        else if ( (char)0xF0 <= text[i] && text[i] <= (char)0xF7 )
         {
-            printf("?バイト\n");
-	    i-=1;
-	    j+=1;
+            utf8_text[j] += text[i];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+1];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+2];
+            utf8_text[j] <<= 8;
+            utf8_text[j] += text[i+3];
+            i+=4;
         }
+        printf("%08x\n", 0xff & text[i]);
+        text_count++;
     }
-    rev_text[size] = '\0';
 
-    printf("%s\n", rev_text);
     return ;
 }
