@@ -17,9 +17,11 @@ void read_file()
 {
     FILE *fp;
     char text[100];
+    char rev_text[100];
     size_t size;
     int i;
     int j;
+    int k;
     utf8 utf8_text[100];
     int text_count;
     utf8 utf8_rev_text[100];
@@ -60,7 +62,7 @@ void read_file()
         // 3バイト
         else if ( (char)0xE0 <= text[i] && text[i] <= (char)0xEF )
         {
-	    utf8_text[j] = 0xFF & text[i];
+	        utf8_text[j] = 0xFF & text[i];
             utf8_text[j] <<= 8;
             utf8_text[j] += 0xFF & text[i+1];
             utf8_text[j] <<= 8;
@@ -79,13 +81,34 @@ void read_file()
             utf8_text[j] += 0xFF & text[i+3];
             i+=4;
         }
-	printf("%08X\n", utf8_text[j]);
+	    printf("%08X\n", utf8_text[j]);
         text_count++;
     }
 
     printf("count: %d\n", text_count);
 
+    for ( i = text_count, j = 0; 0 < i; i-- )
+    {
+        for ( k = 0; k < 4; k++ )
+        {
+            if ( 0x00 != 0xFF000000 & utf8_text[i] )
+            {
+                rev_text[j] = 0xFF000000 & utf8_text[i];
+                utf8_text[i] <<= 8;
+                j++;
+            }
+            else
+            {
+                utf8_text[i] <<= 8;
+            }
+            
+        }
+        
+    }
 
+    rev_text[j] = '\0';
+
+    printf("%s\n", rev_text);
 
     return ;
 }
