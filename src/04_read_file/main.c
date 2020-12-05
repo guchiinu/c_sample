@@ -24,7 +24,6 @@ void read_file()
     int k;
     utf8 utf8_text[100];
     int text_count;
-    utf8 utf8_rev_text[100];
 
     fp = fopen("resource/sample.txt","r");
     if (fp == NULL)
@@ -35,7 +34,6 @@ void read_file()
     size = fread(text, 1, 100, fp);
     text[size] = '\0';
 
-    printf("size: %d\n", size);
     printf("%s\n", text);
 
     // 初期化
@@ -81,11 +79,9 @@ void read_file()
             utf8_text[j] += 0xFF & text[i+3];
             i+=4;
         }
-	    //printf("%08X\n", utf8_text[j]);
         text_count++;
     }
 
-    //printf("count: %d\n", text_count);
 
     for ( i = text_count - 1, j = 0; 0 <= i; i-- )
     {
@@ -106,7 +102,7 @@ void read_file()
         
     }
 
-    //rev_text[size] = '\0';
+    rev_text[size] = '\0';
 
     printf("%s\n", rev_text);
 
