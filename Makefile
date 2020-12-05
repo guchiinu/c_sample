@@ -1,6 +1,6 @@
 OUTDIR=./bin
 
-all: $(OUTDIR) $(OUTDIR)/00_minimum $(OUTDIR)/01_function $(OUTDIR)/02_hello_world $(OUTDIR)/03_variable
+all: $(OUTDIR) $(OUTDIR)/00_minimum $(OUTDIR)/01_function $(OUTDIR)/02_hello_world $(OUTDIR)/03_variable $(OUTDIR)/04_read_file
 
 $(OUTDIR): 
 	mkdir $(OUTDIR)
