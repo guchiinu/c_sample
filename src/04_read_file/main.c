@@ -81,19 +81,19 @@ void read_file()
             utf8_text[j] += 0xFF & text[i+3];
             i+=4;
         }
-	    printf("%08X\n", utf8_text[j]);
+	    //printf("%08X\n", utf8_text[j]);
         text_count++;
     }
 
-    printf("count: %d\n", text_count);
+    //printf("count: %d\n", text_count);
 
-    for ( i = text_count, j = 0; 0 < i; i-- )
+    for ( i = text_count - 1, j = 0; 0 <= i; i-- )
     {
         for ( k = 0; k < 4; k++ )
         {
-            if ( 0x00 != 0xFF000000 & utf8_text[i] )
+            if ( 0 != (0xFF000000 & utf8_text[i]) )
             {
-                rev_text[j] = 0xFF000000 & utf8_text[i];
+                rev_text[j] = (utf8_text[i] >> 8 * 7);
                 utf8_text[i] <<= 8;
                 j++;
             }
@@ -106,7 +106,7 @@ void read_file()
         
     }
 
-    rev_text[j] = '\0';
+    //rev_text[size] = '\0';
 
     printf("%s\n", rev_text);
 
