@@ -36,5 +36,7 @@ void read_file()
         rev_text[j] = text[i];
     }
     rev_text[size] = '\0';
+
+    printf("%s\n", rev_text);
     return ;
 }
