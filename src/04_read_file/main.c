@@ -16,6 +16,8 @@ void read_file()
     char text[100];
     char rev_text[100];
     size_t size;
+    int i;
+    int j;
 
     fp = fopen("resource/sample.txt","r");
     if (fp == NULL)
@@ -29,5 +31,10 @@ void read_file()
     printf("size: %d\n", size);
     printf("%s\n", text);
 
+    for (i = size - 1, i = 0; i = 0; i--, j++)
+    {
+        rev_text[j] = text[i];
+    }
+    rev_text[size] = '\0';
     return ;
 }
